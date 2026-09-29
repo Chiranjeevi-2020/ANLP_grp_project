@@ -1,0 +1,204 @@
+{
+  "sensitive_topics": [
+    {
+      "id": 0,
+      "tag": "job_interview_prep",
+      "name": "Preparing for a confidential job interview",
+      "description": "Discussing leaving the current company, salary expectations, and interview rounds with a competitor.",
+      "keywords": ["interview", "offer", "salary", "recruiter", "competitor", "resume", "manager"],
+      "seeds": [
+        "Hey, I finally heard back from the recruiter at the rival firm. The final round is this Thursday.",
+        "Quick update: they sent over the compensation breakdown, and the base salary is much higher than what I make here.",
+        "I'm feeling really nervous about the technical interview tomorrow. If my current manager finds out, I'm done."
+      ]
+    },
+    {
+      "id": 1,
+      "tag": "medical_diagnosis",
+      "name": "A sensitive health diagnosis",
+      "description": "Talking about doctor's lab results, upcoming surgery or treatment, and asking to keep it private.",
+      "keywords": ["doctor", "test results", "hospital", "prescription", "surgery", "scan", "biopsy"],
+      "seeds": [
+        "I just got the biopsy results back from the clinic. The doctor wants me to come in for surgery next week.",
+        "Promise me you won't tell anyone, but the specialist found something in the MRI scan yesterday.",
+        "The medication they put me on is causing severe side effects, so I might have to take medical leave."
+      ]
+    },
+    {
+      "id": 2,
+      "tag": "surprise_birthday_party",
+      "name": "Planning a surprise birthday party",
+      "description": "Coordinating venue, guest list, and gifts for a mutual friend without letting them find out.",
+      "keywords": ["surprise", "cake", "venue", "guests", "birthday", "gift", "party"],
+      "seeds": [
+        "Have you booked the rooftop venue for the surprise party yet? We need to finalize the headcount.",
+        "Make sure to hide the birthday gift in your trunk so they don't see it when they get in the car.",
+        "We need to collect everyone's contribution for the custom cake before Friday evening."
+      ]
+    },
+    {
+      "id": 3,
+      "tag": "company_layoffs",
+      "name": "Confidential upcoming company layoffs",
+      "description": "Insider knowledge about impending department downsizing and budget cuts.",
+      "keywords": ["layoffs", "severance", "restructuring", "downsizing", "leadership", "budget", "cuts"],
+      "seeds": [
+        "Leadership held a closed-door meeting today. It looks like 20% of engineering is getting laid off next month.",
+        "HR sent an accidental invite to the managers. Massive severance packages are being prepared.",
+        "Our department's budget just got slashed. Start updating your resume before the official announcement."
+      ]
+    },
+    {
+      "id": 4,
+      "tag": "financial_debt",
+      "name": "Severe personal debt and loans",
+      "description": "Struggling with loan repayments, credit card debt, and impending bankruptcy.",
+      "keywords": ["loan", "debt", "interest", "bank", "bankruptcy", "credit card", "default"],
+      "seeds": [
+        "I'm in deep trouble with the bank. The loan payment bounced and debt collectors keep calling.",
+        "I maxed out three credit cards trying to pay off the mortgage, and the interest is drowning me.",
+        "I might actually have to file for bankruptcy if I can't secure an emergency loan this week."
+      ]
+    },
+    {
+      "id": 5,
+      "tag": "romantic_breakup",
+      "name": "Planning a romantic breakup",
+      "description": "Admitting feelings have faded, planning to end a long-term relationship and move out.",
+      "keywords": ["breakup", "relationship", "moving out", "partner", "feelings", "split", "dating"],
+      "seeds": [
+        "I've made up my mind. I'm going to tell them tonight that we need to end the relationship.",
+        "Things haven't been working for months. I already started looking for an apartment to move into alone.",
+        "It's just painful dragging this on. I don't love them anymore and we need to split."
+      ]
+    },
+    {
+      "id": 6,
+      "tag": "cheating_on_exam",
+      "name": "Academic dishonesty / leaked exam papers",
+      "description": "Having access to leaked exam questions or cheating material for an upcoming test.",
+      "keywords": ["exam", "cheating", "answer key", "leaked", "grades", "professor", "test"],
+      "seeds": [
+        "Someone in the senior batch got hold of the exact final exam paper for tomorrow's midterm.",
+        "I have the answer key to the quiz. We need to memorize the solutions before class starts.",
+        "If the professor finds out we have the question bank beforehand, we will face expulsion."
+      ]
+    },
+    {
+      "id": 7,
+      "tag": "whistleblowing_fraud",
+      "name": "Whistleblowing internal fraud",
+      "description": "Gathering evidence of financial embezzlement or illegal practices by upper management.",
+      "keywords": ["embezzlement", "fraud", "evidence", "investigation", "whistleblower", "audit", "compliance"],
+      "seeds": [
+        "I downloaded the financial audit logs. The VP has been siphoning client funds into a shell account.",
+        "We have clear documentary evidence of accounting fraud. I'm submitting it to regulatory compliance.",
+        "Be very careful with what you save on work laptops; internal security might be monitoring our network traffic."
+      ]
+    },
+    {
+      "id": 8,
+      "tag": "unannounced_resignation",
+      "name": "Sudden unannounced resignation",
+      "description": "Planning to quit immediately without giving standard two weeks' notice.",
+      "keywords": ["quit", "resignation", "notice", "walk out", "toxic", "burnout", "boss"],
+      "seeds": [
+        "I cannot take another day under this micromanagement. I'm dropping my resignation letter on Monday.",
+        "I'm walking out without notice. Life is too short to endure this toxic work environment.",
+        "I haven't told my team yet, but my last official working day is this Friday."
+      ]
+    },
+    {
+      "id": 9,
+      "tag": "undisclosed_startup_idea",
+      "name": "Stealth startup idea & IP theft risk",
+      "description": "Working on a proprietary prototype while still employed, hiding it from colleagues.",
+      "keywords": ["startup", "prototype", "investor", "stealth", "patent", "funding", "co-founder"],
+      "seeds": [
+        "An angel investor wants to term-sheet our stealth prototype for $500k, but we need to keep quiet.",
+        "Make sure nobody at the office sees our GitHub commits; the IP clause might claim our startup code.",
+        "We're launching the closed beta next month. We just need to register the company under an LLC."
+      ]
+    }
+  ],
+  "cover_topics": [
+    {
+      "id": 0,
+      "tag": "apartment_renovation",
+      "name": "Home renovation and interior decor",
+      "keywords": ["drywall", "paint", "flooring", "contractor", "kitchen", "cabinets", "tiles"]
+    },
+    {
+      "id": 1,
+      "tag": "baking_sourdough",
+      "name": "Baking sourdough bread and pastries",
+      "keywords": ["flour", "yeast", "oven", "hydration", "starter", "crust", "knead"]
+    },
+    {
+      "id": 2,
+      "tag": "gardening_plants",
+      "name": "Gardening, houseplants, and landscaping",
+      "keywords": ["soil", "succulents", "fertilizer", "sunlight", "repotting", "leaves", "pruning"]
+    },
+    {
+      "id": 3,
+      "tag": "used_car_repairs",
+      "name": "Used car maintenance and engine troubleshooting",
+      "keywords": ["transmission", "oil change", "mileage", "mechanic", "brakes", "engine", "tires"]
+    },
+    {
+      "id": 4,
+      "tag": "marathon_training",
+      "name": "Marathon training and endurance running",
+      "keywords": ["cadence", "mileage", "pace", "shoes", "half-marathon", "hydration", "stretching"]
+    },
+    {
+      "id": 5,
+      "tag": "coffee_brewing",
+      "name": "Specialty coffee brewing and espresso beans",
+      "keywords": ["grind size", "aeropress", "espresso", "roast", "pour-over", "extraction", "beans"]
+    },
+    {
+      "id": 6,
+      "tag": "board_games",
+      "name": "Strategy board games and tabletop gaming",
+      "keywords": ["dice", "catan", "rulebook", "turn", "victory points", "deck", "tokens"]
+    },
+    {
+      "id": 7,
+      "tag": "hiking_camping",
+      "name": "Weekend hiking and backcountry camping",
+      "keywords": ["trail", "backpack", "tent", "sleeping bag", "summit", "elevation", "trek"]
+    },
+    {
+      "id": 8,
+      "tag": "amateur_astronomy",
+      "name": "Stargazing and telescope observation",
+      "keywords": ["telescope", "constellation", "lens", "jupiter", "aperture", "night sky", "nebula"]
+    },
+    {
+      "id": 9,
+      "tag": "aquarium_fishkeeping",
+      "name": "Freshwater aquarium care and aquascaping",
+      "keywords": ["filter", "water parameters", "planted tank", "algae", "tank mates", "cycling", "heater"]
+    }
+  ],
+  "naive_baseline_mapping": {
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 6,
+    "7": 7,
+    "8": 8,
+    "9": 9
+  },
+  "naive_transition_templates": [
+    "Anyway, speaking of {cover_name}, what do you think about it?",
+    "Oh by the way, that reminds me: how is your {cover_name} project coming along?",
+    "Well, leaving that aside for a second, have you made any progress with {cover_name}?",
+    "Anyway, changing topics, did you check out that thing regarding {cover_name}?"
+  ]
+}
