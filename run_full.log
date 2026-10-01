@@ -1,0 +1,244 @@
+Using /opt/homebrew/Caskroom/miniforge/base/bin/python3 (Python 3.12.12)
+...........                                                              [100%]
+11 passed in 2.05s
+
+===== build-data (full) =====
+[cli] archived previous run to /Users/jaiaakash/Desktop/Anlp_Project/ANLP_grp_project/results/mideval/_archive/full_20261001_114055
+[data] {'train': 192, 'dev': 64, 'test': 80}  exact_dups=0 max_jaccard=0.1613
+===== build-data done in 1s =====
+
+===== audit-data (full) =====
+  [PASS] families_disjoint_across_splits
+  [PASS] no_exact_cross_split_duplicates
+  [PASS] no_near_duplicates_jaccard_lt_0.8
+  [PASS] example_ids_disjoint
+  [PASS] labels_balanced_per_split
+  [PASS] public_records_have_only_id_and_history
+  [PASS] example_ids_opaque
+  [PASS] history_contains_no_label_or_tag
+  [PASS] every_history_shared_by_both_pair_topics
+  [PASS] scripted_cover_not_one_to_one
+  [PASS] controller_action_inventory_shared_by_all_topics
+  [PASS] b_c_views_contain_no_private_values
+  [PASS] b_c_prompt_templates_identical_across_examples (same full label list)
+[audit:data] 13/13 passed
+===== audit-data done in 1s =====
+
+===== gen-decoder-data (full) =====
+  [gen dec-train-no_switch] batch 1/12
+  [gen dec-train-no_switch] batch 11/12
+  [gen dec-train-no_switch] batch 12/12
+  [gen dec-train-scripted] batch 1/12
+  [gen dec-train-scripted] batch 11/12
+  [gen dec-train-scripted] batch 12/12
+  [gen dec-train-prompt_only] batch 1/12
+  [gen dec-train-prompt_only] batch 11/12
+  [gen dec-train-prompt_only] batch 12/12
+  [gen dec-dev-no_switch] batch 1/4
+  [gen dec-dev-no_switch] batch 4/4
+  [gen dec-dev-scripted] batch 1/4
+  [gen dec-dev-scripted] batch 4/4
+  [gen dec-dev-prompt_only] batch 1/4
+  [gen dec-dev-prompt_only] batch 4/4
+===== gen-decoder-data done in 1242s =====
+
+===== train-decoder (full) =====
+[decoder:full] layer=28 wd=0.0001 dev_switched=0.527 by_method={'no_switch': 0.734375, 'scripted': 0.53125, 'prompt_only': 0.5234375}
+[decoder:history] layer=28 wd=0.0001 dev_switched=0.438 by_method={'no_switch': 0.4375, 'scripted': 0.4375, 'prompt_only': 0.4375}
+[decoder:message] layer=8 wd=0.0001 dev_switched=0.520 by_method={'no_switch': 0.6953125, 'scripted': 0.5703125, 'prompt_only': 0.46875}
+[decoder] reward gate passed=True (full 0.527 vs history 0.438)
+===== train-decoder done in 44s =====
+
+===== build-bank (full) =====
+  [gen bank-train] batch 1/96
+  [gen bank-train] batch 11/96
+  [gen bank-train] batch 21/96
+  [gen bank-train] batch 31/96
+  [gen bank-train] batch 41/96
+  [gen bank-train] batch 51/96
+  [gen bank-train] batch 61/96
+  [gen bank-train] batch 71/96
+  [gen bank-train] batch 81/96
+  [gen bank-train] batch 91/96
+  [gen bank-train] batch 96/96
+  [C] batch 1/96
+  [C] batch 11/96
+  [C] batch 21/96
+  [C] batch 31/96
+  [C] batch 41/96
+  [C] batch 51/96
+  [C] batch 61/96
+  [C] batch 71/96
+  [C] batch 81/96
+  [C] batch 91/96
+  [C] batch 96/96
+[bank:train] n=3072 B=0.527 C=0.179 C_valid=1.000 R=0.348
+  [gen bank-dev] batch 1/16
+  [gen bank-dev] batch 11/16
+  [gen bank-dev] batch 16/16
+  [C] batch 1/16
+  [C] batch 11/16
+  [C] batch 16/16
+[bank:dev] n=512 B=0.391 C=0.172 C_valid=1.000 R=0.219
+===== build-bank done in 4084s =====
+
+===== smoke (full) =====
+  [gen smoke-0] batch 1/1
+  [C] batch 1/1
+[smoke] step 0 R=0.38 grad=2.595 adv=0.375
+  [gen smoke-1] batch 1/1
+  [C] batch 1/1
+[smoke] step 1 R=0.00 grad=3.154 adv=0.519
+  [gen smoke-2] batch 1/1
+  [C] batch 1/1
+[smoke] step 2 R=0.38 grad=2.172 adv=0.383
+[smoke] passed=True {'grads_finite': True, 'grads_nonzero_when_signal': True, 'had_learning_signal': True, 'controller_weights_changed': True, 'frozen_lm_unchanged': True, 'b_decoder_unchanged': True, 'action_probs_valid': True, 'rewards_in_set': True, 'updates_from_train_split_only': True}
+===== smoke done in 66s =====
+
+===== audit-smoke (full) =====
+  [PASS] smoke:grads_finite
+  [PASS] smoke:grads_nonzero_when_signal
+  [PASS] smoke:had_learning_signal
+  [PASS] smoke:controller_weights_changed
+  [PASS] smoke:frozen_lm_unchanged
+  [PASS] smoke:b_decoder_unchanged
+  [PASS] smoke:action_probs_valid
+  [PASS] smoke:rewards_in_set
+  [PASS] smoke:updates_from_train_split_only
+  [PASS] smoke_run_id_current
+  [PASS] smoke_baseline_chain_consistent
+  [PASS] loss_sign_pos_reward_moves_prob_correctly
+  [PASS] loss_sign_neg_reward_moves_prob_correctly
+  [PASS] advantage_uses_previous_baseline
+  [PASS] static:train_rl_never_references_test_split
+  [PASS] static:train_decoders_never_references_test_split
+  [PASS] static:gen_decoder_data_never_references_test_split
+  [PASS] static:build_bank_never_references_test_split
+  [PASS] static:smoke_never_references_test_split
+[audit:smoke] 19/19 passed
+===== audit-smoke done in 2s =====
+
+===== train-rl (full) =====
+[rl] step 0 dev={'reward': 0.2182008676463738, 'b_acc': 0.3911892995238304, 'c_acc': 0.1729884318774566, 'entropy': 2.073373317718506}
+[rl] step 25 train_R=0.422 base=0.367 ent=1.808 dev={'reward': 0.27614739240380004, 'b_acc': 0.3964656784373801, 'c_acc': 0.12031828603358008, 'entropy': 1.834675908088684}
+[rl] step 50 train_R=0.438 base=0.464 ent=1.480 dev={'reward': 0.35395312783657573, 'b_acc': 0.4333862718922319, 'c_acc': 0.07943314405565616, 'entropy': 1.5165417194366455}
+[rl] step 75 train_R=0.562 base=0.525 ent=1.148 dev={'reward': 0.42863841688085813, 'b_acc': 0.5099651521559281, 'c_acc': 0.08132673527506995, 'entropy': 1.305916428565979}
+[rl] step 100 train_R=0.609 base=0.623 ent=0.691 dev={'reward': 0.4354396852104401, 'b_acc': 0.5261162799215526, 'c_acc': 0.09067659471111256, 'entropy': 0.8815350532531738}
+[rl] step 125 train_R=0.547 base=0.641 ent=0.478 dev={'reward': 0.4412065313244966, 'b_acc': 0.5563416456084269, 'c_acc': 0.1151351142839303, 'entropy': 0.6595349907875061}
+[rl] step 150 train_R=0.734 base=0.677 ent=0.263 dev={'reward': 0.43302412750563235, 'b_acc': 0.5445233541927337, 'c_acc': 0.11149922668710133, 'entropy': 0.4092261493206024}
+[rl] step 175 train_R=0.672 base=0.652 ent=0.192 dev={'reward': 0.4391834143821143, 'b_acc': 0.5639566980428299, 'c_acc': 0.1247732836607156, 'entropy': 0.2721633315086365}
+[rl] step 200 train_R=0.625 base=0.667 ent=0.157 dev={'reward': 0.42781401082083903, 'b_acc': 0.5531174722286778, 'c_acc': 0.12530346140783877, 'entropy': 0.2749288082122803}
+[rl] step 225 train_R=0.719 base=0.673 ent=0.125 dev={'reward': 0.4332260991805583, 'b_acc': 0.5590771906227587, 'c_acc': 0.1258510914422004, 'entropy': 0.14649125933647156}
+[rl] step 250 train_R=0.703 base=0.693 ent=0.072 dev={'reward': 0.43837803444063184, 'b_acc': 0.5644814966355511, 'c_acc': 0.1261034621949193, 'entropy': 0.11468173563480377}
+[rl] step 275 train_R=0.734 base=0.702 ent=0.046 dev={'reward': 0.43905986282788945, 'b_acc': 0.5651671605207298, 'c_acc': 0.12610729769284035, 'entropy': 0.14509636163711548}
+[rl] step 300 train_R=0.656 base=0.708 ent=0.059 dev={'reward': 0.44273133764590966, 'b_acc': 0.5704306437490914, 'c_acc': 0.1276993061031817, 'entropy': 0.17489993572235107}
+[rl] step 325 train_R=0.703 base=0.688 ent=0.111 dev={'reward': 0.42120499847942483, 'b_acc': 0.557820775944947, 'c_acc': 0.13661577746552211, 'entropy': 0.18891018629074097}
+[rl] step 350 train_R=0.672 base=0.707 ent=0.031 dev={'reward': 0.4385645106552829, 'b_acc': 0.5667942716495986, 'c_acc': 0.1282297609943157, 'entropy': 0.15159732103347778}
+[rl] step 375 train_R=0.781 base=0.656 ent=0.044 dev={'reward': 0.40765632783941896, 'b_acc': 0.5479968135311708, 'c_acc': 0.14034048569175184, 'entropy': 0.1480627954006195}
+[rl] step 400 train_R=0.641 base=0.693 ent=0.050 dev={'reward': 0.4012552571830099, 'b_acc': 0.513968845381811, 'c_acc': 0.11271358819880106, 'entropy': 0.16983605921268463}
+[rl] step 425 train_R=0.781 base=0.692 ent=0.038 dev={'reward': 0.363397325368382, 'b_acc': 0.49684847243948127, 'c_acc': 0.13345114707109929, 'entropy': 0.1578896939754486}
+[rl] step 450 train_R=0.750 base=0.692 ent=0.036 dev={'reward': 0.3884554813184167, 'b_acc': 0.5089335993664434, 'c_acc': 0.12047811804802677, 'entropy': 0.18250223994255066}
+[rl] step 475 train_R=0.719 base=0.708 ent=0.026 dev={'reward': 0.39547928799980525, 'b_acc': 0.5175097702500864, 'c_acc': 0.12203048225028112, 'entropy': 0.14416435360908508}
+[rl] step 500 train_R=0.703 base=0.675 ent=0.020 dev={'reward': 0.41774160924792625, 'b_acc': 0.5296219965477604, 'c_acc': 0.11188038729983418, 'entropy': 0.051054697483778}
+[rl] step 525 train_R=0.578 base=0.662 ent=0.034 dev={'reward': 0.42080848293323925, 'b_acc': 0.5312270266902601, 'c_acc': 0.11041854375702087, 'entropy': 0.02562936395406723}
+[rl] step 550 train_R=0.719 base=0.691 ent=0.031 dev={'reward': 0.415259178314372, 'b_acc': 0.529357210627964, 'c_acc': 0.11409803231359206, 'entropy': 0.07139016687870026}
+[rl] step 575 train_R=0.625 base=0.701 ent=0.022 dev={'reward': 0.3992098732431941, 'b_acc': 0.5129285188837827, 'c_acc': 0.11371864564058853, 'entropy': 0.095902219414711}
+[rl] step 600 train_R=0.703 base=0.692 ent=0.036 dev={'reward': 0.4044916473005884, 'b_acc': 0.5157762469608542, 'c_acc': 0.11128459966026583, 'entropy': 0.08258214592933655}
+[rl] step 625 train_R=0.719 base=0.670 ent=0.061 dev={'reward': 0.4063103397880923, 'b_acc': 0.5156412710200158, 'c_acc': 0.1093309312319235, 'entropy': 0.08101196587085724}
+[rl] step 650 train_R=0.656 base=0.709 ent=0.024 dev={'reward': 0.4110064727964158, 'b_acc': 0.5207119511522365, 'c_acc': 0.10970547835582067, 'entropy': 0.08642278611660004}
+[rl] step 675 train_R=0.734 base=0.705 ent=0.014 dev={'reward': 0.3996170992597712, 'b_acc': 0.5106070985778288, 'c_acc': 0.11098999931805764, 'entropy': 0.05486571043729782}
+[rl] step 700 train_R=0.547 base=0.709 ent=0.047 dev={'reward': 0.39282297632979635, 'b_acc': 0.5024085586410152, 'c_acc': 0.10958558231121884, 'entropy': 0.09871356934309006}
+[rl] step 725 train_R=0.578 base=0.696 ent=0.024 dev={'reward': 0.39108088841297217, 'b_acc': 0.5082072611124531, 'c_acc': 0.1171263726994809, 'entropy': 0.08199924230575562}
+[rl] step 750 train_R=0.719 base=0.688 ent=0.010 dev={'reward': 0.38983740835328007, 'b_acc': 0.5174928131608141, 'c_acc': 0.127655404807534, 'entropy': 0.1030634269118309}
+[rl] step 775 train_R=0.625 base=0.700 ent=0.014 dev={'reward': 0.3837862947257378, 'b_acc': 0.5153580583123656, 'c_acc': 0.1315717635866278, 'entropy': 0.10300028324127197}
+[rl] step 800 train_R=0.703 base=0.711 ent=0.006 dev={'reward': 0.3819086116211068, 'b_acc': 0.504143547659087, 'c_acc': 0.12223493603798019, 'entropy': 0.08512718230485916}
+[rl] step 825 train_R=0.734 base=0.713 ent=0.010 dev={'reward': 0.40140054613272724, 'b_acc': 0.5237671385121772, 'c_acc': 0.12236659237944991, 'entropy': 0.0876818522810936}
+[rl] step 850 train_R=0.766 base=0.673 ent=0.007 dev={'reward': 0.4156328700590226, 'b_acc': 0.5350536375691153, 'c_acc': 0.11942076751009267, 'entropy': 0.08076480031013489}
+[rl] step 875 train_R=0.766 base=0.680 ent=0.027 dev={'reward': 0.4194999949335525, 'b_acc': 0.5371285789023688, 'c_acc': 0.11762858396881626, 'entropy': 0.07857787609100342}
+[rl] step 900 train_R=0.703 base=0.690 ent=0.006 dev={'reward': 0.4051985191477847, 'b_acc': 0.529197637105252, 'c_acc': 0.12399911795746732, 'entropy': 0.08139622211456299}
+[rl] step 925 train_R=0.828 base=0.695 ent=0.008 dev={'reward': 0.3957319198019391, 'b_acc': 0.5170927729738537, 'c_acc': 0.12136085317191458, 'entropy': 0.11030195653438568}
+[rl] step 950 train_R=0.562 base=0.681 ent=0.011 dev={'reward': 0.41667451425704627, 'b_acc': 0.5438834351981114, 'c_acc': 0.12720892094106517, 'entropy': 0.06236494332551956}
+[rl] step 975 train_R=0.672 base=0.689 ent=0.005 dev={'reward': 0.4232638016425412, 'b_acc': 0.5483234660787133, 'c_acc': 0.1250596644361721, 'entropy': 0.06412527710199356}
+[rl] step 1000 train_R=0.594 base=0.675 ent=0.005 dev={'reward': 0.40145153416186474, 'b_acc': 0.5373156116168651, 'c_acc': 0.1358640774550004, 'entropy': 0.06413082778453827}
+[rl] best dev step=300 reward=0.443 (init 0.218, uniform 0.219)
+===== train-rl done in 6s =====
+
+===== evaluate (full) =====
+  [B-history_only] batch 1/3
+  [B-history_only] batch 3/3
+  [gen test-no_switch] batch 1/5
+  [gen test-no_switch] batch 5/5
+  [C] batch 1/5
+  [C] batch 5/5
+  [B-full] batch 1/5
+  [B-full] batch 5/5
+  [B-message_only] batch 1/5
+  [B-message_only] batch 5/5
+[eval:no_switch] B_dec=0.875 C=0.637 joint=0.269 R=0.237 C_valid=1.00
+  [gen test-scripted] batch 1/5
+  [gen test-scripted] batch 5/5
+  [C] batch 1/5
+  [C] batch 5/5
+  [B-full] batch 1/5
+  [B-full] batch 5/5
+  [B-message_only] batch 1/5
+  [B-message_only] batch 5/5
+[eval:scripted] B_dec=0.519 C=0.181 joint=0.406 R=0.338 C_valid=1.00
+  [gen test-prompt_only] batch 1/5
+  [gen test-prompt_only] batch 5/5
+  [C] batch 1/5
+  [C] batch 5/5
+  [B-full] batch 1/5
+  [B-full] batch 5/5
+  [B-message_only] batch 1/5
+  [B-message_only] batch 5/5
+[eval:prompt_only] B_dec=0.656 C=0.431 joint=0.294 R=0.225 C_valid=1.00
+  [gen test-untrained_controller] batch 1/5
+  [gen test-untrained_controller] batch 5/5
+  [C] batch 1/5
+  [C] batch 5/5
+  [B-full] batch 1/5
+  [B-full] batch 5/5
+  [B-message_only] batch 1/5
+  [B-message_only] batch 5/5
+[eval:untrained_controller] B_dec=0.425 C=0.156 joint=0.319 R=0.269 C_valid=1.00
+  [gen test-rl_controller] batch 1/5
+  [gen test-rl_controller] batch 5/5
+  [C] batch 1/5
+  [C] batch 5/5
+  [B-full] batch 1/5
+  [B-full] batch 5/5
+  [B-message_only] batch 1/5
+  [B-message_only] batch 5/5
+[eval:rl_controller] B_dec=0.637 C=0.144 joint=0.500 R=0.494 C_valid=1.00
+  [gen test-rl_controller_greedy] batch 1/5
+  [gen test-rl_controller_greedy] batch 5/5
+  [C] batch 1/5
+  [C] batch 5/5
+  [B-full] batch 1/5
+  [B-full] batch 5/5
+  [B-message_only] batch 1/5
+  [B-message_only] batch 5/5
+[eval:rl_controller_greedy] B_dec=0.606 C=0.100 joint=0.506 R=0.506 C_valid=1.00
+===== evaluate done in 1900s =====
+
+===== audit-final (full) =====
+  [PASS] all_artifacts_share_current_run_id
+  [PASS] artifact_timestamps_in_pipeline_order
+  [PASS] config_hash_consistent
+  [PASS] eval_newer_than_controller_checkpoint
+  [PASS] decoders_trained_on_train_selected_on_dev
+  [PASS] rl_trained_on_train_selected_on_dev
+  [PASS] no_test_rollouts_in_training_dirs
+  [PASS] public_test_rollouts_have_only_rid_id_message
+  [PASS] all_methods_same_test_examples
+  [PASS] invalid_predictions_kept_in_denominator
+  [PASS] no_private_strings_in_public_messages
+  [PASS] matched_generation_budget
+  [PASS] decoders_frozen_since_training
+  [PASS] frozen_lm_unchanged_smoke_to_eval
+  [PASS] b_decoder_reward_gate (meaningful above history-only)
+  [PASS] rl_improved_dev_reward_over_init (informational)
+[audit:final] 16/16 passed
+===== audit-final done in 2s =====
+Done. See results/mideval/full/

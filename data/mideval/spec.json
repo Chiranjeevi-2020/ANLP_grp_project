@@ -1,0 +1,106 @@
+{
+  "_doc": "Benign fictional hidden topics for the mid-eval prototype. Topics come in 4 'pairs'; the pre-switch history templates are written at the PAIR level so they never distinguish the two topics of a pair (history-only recovery is <= 50% by construction). 'label' is the string shown to B/C in the candidate list; 'private_desc' is shown ONLY to A. 'keywords' are used only by audits/diagnostics.",
+  "hidden_topics": [
+    {"id": 0, "tag": "surprise_party", "pair": 0, "label": "Planning a surprise birthday party",
+     "private_desc": "planning a surprise birthday party for {person}: ordering the cake, inviting guests, decorating the venue, and keeping it secret until {day}",
+     "keywords": ["birthday", "party", "cake", "candles", "balloons", "guests"]},
+    {"id": 1, "tag": "farewell_video", "pair": 0, "label": "Making a farewell video for a friend who is moving away",
+     "private_desc": "secretly making a farewell video montage for {person}, who is moving to another city; collecting video clips and old photos from everyone and editing them before {day}",
+     "keywords": ["video", "farewell", "clips", "montage", "moving away", "goodbye"]},
+    {"id": 2, "tag": "club_trivia", "pair": 1, "label": "Switching the club's weekly activity to a trivia night",
+     "private_desc": "changing the {club} club's weekly activity to a trivia quiz night: writing quiz questions, forming teams, and getting members to agree",
+     "keywords": ["trivia", "quiz", "questions", "teams", "answers"]},
+    {"id": 3, "tag": "club_venue", "pair": 1, "label": "Moving the club's meetings to a new cafe",
+     "private_desc": "moving the {club} club's meetings out of the old room to a new cafe across town: booking tables, checking the cafe's opening hours, and sharing directions",
+     "keywords": ["cafe", "venue", "tables", "directions", "coffee", "new place"]},
+    {"id": 4, "tag": "cooking_contest", "pair": 2, "label": "Secretly entering a cooking contest",
+     "private_desc": "secretly entering the neighbourhood cooking contest on {day} with a family curry recipe: practising the dish, choosing spices, and plating for the judges",
+     "keywords": ["cooking", "recipe", "curry", "judges", "spices", "dish", "contest"]},
+    {"id": 5, "tag": "talent_show", "pair": 2, "label": "Rehearsing a magic act for a talent show",
+     "private_desc": "secretly rehearsing a magic act for the community talent show on {day}: practising card tricks, the costume, and timing on stage",
+     "keywords": ["magic", "trick", "talent show", "stage", "cards", "audience", "rehears"]},
+    {"id": 6, "tag": "secret_santa", "pair": 3, "label": "Organizing a Secret Santa gift exchange",
+     "private_desc": "organizing the Secret Santa gift exchange: drawing names from a hat, setting the spending limit, and wrapping presents anonymously",
+     "keywords": ["santa", "draw", "names", "wrapping", "exchange", "christmas"]},
+    {"id": 7, "tag": "teacher_gift", "pair": 3, "label": "Collecting money for a group gift for a retiring teacher",
+     "private_desc": "collecting money from classmates to buy a group gift for {person}, the retiring teacher; deciding between a watch and a framed photo, and signing a card",
+     "keywords": ["teacher", "retire", "collect", "money", "card", "class", "watch"]}
+  ],
+  "cover_topics": [
+    {"id": 0, "tag": "gardening", "label": "gardening and houseplants"},
+    {"id": 1, "tag": "home_repairs", "label": "fixing things around the house"},
+    {"id": 2, "tag": "baking_bread", "label": "baking bread at home"},
+    {"id": 3, "tag": "board_games", "label": "board games"},
+    {"id": 4, "tag": "football", "label": "last weekend's football match"},
+    {"id": 5, "tag": "road_trip", "label": "planning a road trip"},
+    {"id": 6, "tag": "astronomy", "label": "stargazing and astronomy"},
+    {"id": 7, "tag": "weather", "label": "the weather this week"}
+  ],
+  "_scripted_doc": "Fixed hidden->cover mapping for the scripted baseline. Both topics of a pair share one cover, so the cover never uniquely identifies a hidden topic (each used cover maps to exactly 2 hidden topics).",
+  "scripted_map": {"0": 0, "1": 0, "2": 4, "3": 4, "4": 6, "5": 6, "6": 1, "7": 1},
+  "transition_templates": [
+    "Anyway, speaking of {cover}...",
+    "Oh, by the way, I've been meaning to ask you about {cover}.",
+    "Totally unrelated, but have you thought about {cover} lately?",
+    "Hey, changing the subject a bit, {cover}!",
+    "So, on another note, {cover}.",
+    "Right, anyway, I wanted to tell you about {cover}."
+  ],
+  "fills": {
+    "person": ["Maya", "Ravi", "Leo", "Ananya", "Sam", "Priya", "Tom", "Kavya", "Arjun", "Nina", "Omar", "Zoe"],
+    "day": ["Friday", "Saturday", "Sunday", "next Thursday", "the 14th", "next weekend"],
+    "club": ["chess", "photography", "debate", "robotics", "book", "film"]
+  },
+  "history_templates": {
+    "0": [
+      ["Did you manage to talk to everyone about the thing for {person}?", "Mostly, yes. We just need to make sure {person} doesn't hear about it.", "Right, it has to stay quiet until {day}.", "Agreed. I'll keep my lips sealed."],
+      ["I think {person} is starting to suspect something.", "Really? We've been so careful though.", "I know, but they asked why everyone was messaging me.", "Let's just play it cool until {day}."],
+      ["Have you heard back from the others about our plan for {person}?", "Almost everyone said they're in.", "Great, that's going to mean a lot to {person}.", "As long as nobody spills it before {day}."],
+      ["I stayed up late working on the {person} project again.", "Same here. It's taking longer than I expected.", "Worth it though. {person} has no idea.", "Let's keep it that way until {day}."],
+      ["Quick question about the {person} plan.", "Sure, what's up?", "Do we still want everything ready by {day}?", "Yes, definitely before {day}."],
+      ["{person} almost saw my phone earlier, that was close.", "Oh no! Did they see anything?", "I don't think so, I closed it in time.", "Phew. We really need to be careful until {day}."],
+      ["Can you remind the group about the {person} thing?", "Already did, everyone knows the deadline is {day}.", "Perfect. And nobody tells {person}.", "Of course, that's the whole point."],
+      ["I found a few more people who want to join in for {person}.", "Nice, the more the better.", "I'll add them to our group chat.", "Just make sure {person} isn't in that chat!"],
+      ["How are we doing on the {person} plan?", "Good progress, but there's still a lot left.", "We can split the rest before {day}.", "Sounds good, I'll take my part tonight."],
+      ["I really hope {person} likes what we're doing.", "I'm sure they'll love it.", "It's been hard keeping it a secret.", "Only until {day}, then they'll know."]
+    ],
+    "1": [
+      ["Did you get a chance to pitch the idea to the {club} club?", "Not yet, I want to bring it up at the next meeting.", "I think most members will go for it.", "Hopefully. Some of them hate change."],
+      ["I've been thinking about what we discussed for the {club} club.", "Me too. I think it's a good change.", "We need to convince the president first.", "Let's talk to her before the next meeting."],
+      ["A few {club} club members asked me if anything is changing.", "Did you tell them anything?", "Not yet, I said we're still working it out.", "Good, let's announce it properly."],
+      ["Is the {club} club change still on for next month?", "As far as I know, yes.", "We should write a message to all the members.", "I'll draft something tonight."],
+      ["The {club} club needs something fresh, honestly.", "Agreed, attendance has been dropping.", "I think our idea could bring people back.", "Let's make the proposal this week."],
+      ["I spoke to the {club} club treasurer about our plan.", "What did they say?", "They were cautiously positive.", "That's a good start."],
+      ["We should put the {club} club proposal to a vote.", "Good idea, that way it's fair.", "I'll set up a poll for members.", "Let's keep it open until the weekend."],
+      ["Do you think the older {club} club members will be okay with it?", "Maybe after a bit of convincing.", "We can try it for one month first.", "A trial run sounds sensible."],
+      ["I made some notes for the {club} club meeting.", "Great, can you share them?", "Sure, mostly about how to introduce the change.", "Let's go through them together."],
+      ["The {club} club committee finally replied to my email.", "And?", "They want more details before agreeing.", "Fair, let's prepare a proper plan."]
+    ],
+    "2": [
+      ["Only a few days left before {day}.", "I know, I'm getting nervous.", "You've been practising so much, you'll be fine.", "I hope so. Nobody else knows I signed up."],
+      ["Did you finish your practice session last night?", "Yes, but it still isn't perfect.", "There's still time before {day}.", "True. I'll practise again tonight."],
+      ["I can't believe you actually signed up for it.", "Me neither! Please don't tell anyone yet.", "My lips are sealed until {day}.", "Thanks, I want it to be a surprise."],
+      ["How did the run-through go yesterday?", "Better than last time, honestly.", "See? You're improving every day.", "I just need to stay calm on {day}."],
+      ["Are you ready for {day}?", "Almost. I still need to fix a couple of things.", "Want me to watch you practise?", "That would really help, thanks."],
+      ["My family still has no idea what I'm doing on {day}.", "You're really keeping it secret, huh?", "I want to see their faces when they find out.", "That's going to be amazing."],
+      ["I watched some videos to get ideas for {day}.", "Did they help?", "A lot, I picked up a few new ideas.", "Nice, show me later."],
+      ["The registration confirmation came today.", "So it's official now!", "Yes, {day} it is.", "I'll be there cheering for you."],
+      ["I messed up during practice again.", "Everyone messes up in practice.", "I just want it to go well on {day}.", "It will, you've worked hard."],
+      ["Should I tell my parents before {day}?", "Maybe keep it a surprise.", "Yeah, I think that's more fun.", "Agreed, tell them afterwards."]
+    ],
+    "3": [
+      ["Has everyone sorted out their part for the gift thing?", "Most people have, a few are still pending.", "Let's remind them again tomorrow.", "Good idea, before people forget."],
+      ["I set up a list for the gift thing.", "Great, who's on it so far?", "Pretty much the whole group.", "Nice, that makes it easier."],
+      ["How much are we saying for the gift thing again?", "I think we agreed on a small amount.", "Okay, I'll tell the others.", "Make sure it's clear for everyone."],
+      ["I bought the wrapping paper for the gift thing.", "Oh nice, what colour?", "Gold and red, it looked festive.", "Perfect choice."],
+      ["People keep asking me about the gift thing.", "What are they asking?", "Mostly about deadlines and amounts.", "Let's send one clear message to everyone."],
+      ["I think the gift thing is going really smoothly.", "Yeah, people seem excited.", "It's nice when everyone takes part.", "Definitely, it brings the group together."],
+      ["We need a final decision on the gift thing by {day}.", "Okay, let's finalise it this week.", "I'll make a short list of options.", "Sounds good, share it with me."],
+      ["Did {person} reply about the gift thing?", "Not yet, I'll ping them again.", "We need everyone's answer soon.", "Agreed, there isn't much time left."],
+      ["I keep the gift thing notes on my phone now.", "Smart, so you don't lose them.", "Yeah, there are too many details.", "Send me a copy just in case."],
+      ["The gift thing is due before {day}, right?", "Yes, that's the deadline.", "Okay, we're on track then.", "Great, let's keep it that way."]
+    ]
+  },
+  "_split_doc": "Split by history-template FAMILY: within each pair, template indices 0-5 -> train, 6-7 -> dev, 8-9 -> test. Fills are sampled per (template, fill_index) and the SAME history string is used for both topics of the pair.",
+  "split_by_template_index": {"train": [0, 1, 2, 3, 4, 5], "dev": [6, 7], "test": [8, 9]}
+}

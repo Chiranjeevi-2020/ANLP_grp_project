@@ -1,0 +1,74 @@
+{
+  "run_name": "tiny",
+  "seed": 13,
+  "model_name": "Qwen/Qwen2.5-1.5B-Instruct",
+  "device": "mps",
+  "dtype": "float16",
+  "data": {
+    "fills_per_template": {
+      "train": 1,
+      "dev": 1,
+      "test": 1
+    }
+  },
+  "gen": {
+    "max_new_tokens": 60,
+    "temperature": 0.8,
+    "top_p": 0.95,
+    "batch_size": 32
+  },
+  "classify": {
+    "max_new_tokens": 4,
+    "batch_size": 32
+  },
+  "features": {
+    "layers": [
+      16,
+      28
+    ],
+    "batch_size": 32
+  },
+  "decoder": {
+    "rollouts_per_example": 1,
+    "methods": [
+      "no_switch",
+      "scripted",
+      "prompt_only"
+    ],
+    "weight_decays": [
+      0.01
+    ],
+    "epochs": 50,
+    "lr": 0.01,
+    "min_dev_acc": 0.25,
+    "min_gain_over_history": 0.03
+  },
+  "bank": {
+    "k_train": 1,
+    "k_dev": 1
+  },
+  "controller": {
+    "topic_emb_dim": 64,
+    "hidden_dim": 256,
+    "init_std": 0.01
+  },
+  "rl": {
+    "lambda": 1.0,
+    "steps": 40,
+    "batch_size": 16,
+    "lr": 0.003,
+    "entropy_coef": 0.01,
+    "baseline_momentum": 0.9,
+    "grad_clip": 1.0,
+    "eval_every": 10
+  },
+  "smoke": {
+    "steps": 2,
+    "batch_size": 4
+  },
+  "eval": {
+    "rollouts_per_example": 1,
+    "bootstrap": 200
+  },
+  "_doc": "Pipeline-verification preset only. Results from this preset are NOT experimental results."
+}
