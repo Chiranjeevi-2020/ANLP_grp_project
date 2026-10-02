@@ -111,10 +111,13 @@ def upload_to_huggingface(cfg, target_path: str, repo_id: str = None, repo_type:
         if not repo_id:
             try:
                 api = huggingface_hub.HfApi(token=token)
-                user = api.whoami()["name"]
+                who = api.whoami()
+                user = (who.get("name") or who.get("username")) if isinstance(who, dict) else getattr(who, "name", None)
+                if not user:
+                    raise ValueError("Username could not be determined")
                 repo_id = f"{user}/anlp-context-switching-controller"
-            except Exception:
-                print("[hf_hub] No HF_REPO_ID provided and could not deduce username; skipping HF upload.")
+            except Exception as e:
+                print(f"[hf_hub] No HF_REPO_ID provided and could not deduce username ({e}); skipping HF upload.")
                 return False
 
     try:

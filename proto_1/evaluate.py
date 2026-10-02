@@ -61,11 +61,14 @@ def _jobs(cfg, spec, pub, lab, method, policies, feats):
     return jobs
 
 
-def evaluate(cfg, spec, lm, tracker=None):
+def evaluate(cfg, spec, lm, tracker=None, methods=None):
     tracker_created = False
     if tracker is None:
         tracker = ExperimentTracker(cfg, job_type="eval")
         tracker_created = True
+
+    if methods is None:
+        methods = METHODS
 
     K = len(spec["hidden_topics"])
     pub, lab = load_split(cfg, "test")
@@ -93,7 +96,7 @@ def evaluate(cfg, spec, lm, tracker=None):
     }
 
     metrics, raw_all = {}, {}
-    for method in METHODS:
+    for method in methods:
         jobs = _jobs(cfg, spec, pub, lab, method, policies, feats_test)
         public, private = rollouts.generate(cfg, spec, lm, "test", jobs, f"test-{method}")
         rollouts.save(cfg, "test", method, public, private)
@@ -231,7 +234,9 @@ def write_tables(cfg, spec, out):
 
 
 def write_examples(cfg, spec, raw_all, lab, hist_by_id):
-    rows = raw_all["rl_controller"]
+    rows = raw_all.get("rl_controller")
+    if not rows:
+        return
     succ = [r for r in rows if r["b_decoder_pred"] == r["gold_z"] and r["c_pred"] != r["gold_z"]]
     fail = [r for r in rows if not (r["b_decoder_pred"] == r["gold_z"] and r["c_pred"] != r["gold_z"])]
     T = spec["hidden_topics"]

@@ -107,18 +107,23 @@ class FrozenLM:
             t_batch = target_texts[i:i + batch_size]
             full_texts = [c + t for c, t in zip(c_batch, t_batch)]
 
-            enc_c = self.tok(c_batch, add_special_tokens=False)
+            enc_c = self.tok(c_batch)
             enc_full = self.tok(full_texts, return_tensors="pt", padding=True).to(self.device)
 
             labels = enc_full["input_ids"].clone()
             for b_idx, c_toks in enumerate(enc_c["input_ids"]):
                 c_len = len(c_toks)
                 pad_len = int((enc_full["attention_mask"][b_idx] == 0).sum().item())
-                labels[b_idx, :pad_len + c_len] = -100
+                # Mask out left padding and context tokens
+                labels[b_idx, :min(pad_len + c_len, labels.shape[1])] = -100
                 labels[b_idx, enc_full["attention_mask"][b_idx] == 0] = -100
 
+            if (labels != -100).sum() == 0:
+                continue
+
             outputs = self.model(**enc_full, labels=labels)
-            losses.append(outputs.loss.item())
+            if torch.isfinite(outputs.loss):
+                losses.append(outputs.loss.item())
 
         mean_loss = float(np.mean(losses)) if losses else 0.0
         ppl = float(np.exp(min(mean_loss, 20.0)))

@@ -7,6 +7,7 @@ generates comparison plots, and logs curves to Weights & Biases.
 import argparse
 import copy
 import json
+import shutil
 from pathlib import Path
 
 import matplotlib
@@ -52,6 +53,15 @@ def run_lambda_sweep(base_cfg, lambdas=(0.0, 0.5, 1.0, 1.5, 2.0), output_subdir=
         cfg["rl"]["lambda"] = float(lam)
         cfg["run_name"] = f"{base_cfg['run_name']}_lam_{lam:.2f}".replace(".", "_")
 
+        # Copy data, decoders, features from base_cfg
+        base_dir = run_dir(base_cfg)
+        curr_dir = run_dir(cfg)
+        for dir_name in ("data", "decoders", "features"):
+            src_dir = base_dir / dir_name
+            dst_dir = curr_dir / dir_name
+            if src_dir.exists() and not dst_dir.exists():
+                shutil.copytree(src_dir, dst_dir)
+
         # Recalculate bank scores with current lambda
         for split in ("train", "dev"):
             pub, lab = pipeline.load_split(base_cfg, split)
@@ -62,13 +72,19 @@ def run_lambda_sweep(base_cfg, lambdas=(0.0, 0.5, 1.0, 1.5, 2.0), output_subdir=
                 r_new = dict(r)
                 r_new["reward"] = float(r["b_correct"]) - lam * float(r["c_correct"])
                 new_rows.append(r_new)
-            # Save into the run_name directory
             write_jsonl(sub(cfg, "rollouts", split, "bank.scores.jsonl"), new_rows)
+            src_msgfeat = sub(base_cfg, "rollouts", split, "bank.msgfeat.npy")
+            if src_msgfeat.exists():
+                shutil.copy2(src_msgfeat, sub(cfg, "rollouts", split, "bank.msgfeat.npy"))
+
+        # Copy bank_meta.json if present
+        src_bankmeta = sub(base_cfg, "rollouts", "bank_meta.json")
+        if src_bankmeta.exists():
+            shutil.copy2(src_bankmeta, sub(cfg, "rollouts", "bank_meta.json"))
 
         # Copy smoke result or create valid smoke manifest
         smoke_orig = read_json(sub(base_cfg, "rl", "smoke.json"))
         smoke_copy = copy.deepcopy(smoke_orig)
-        # Ensure run_id matches current sub cfg manifest
         manifest_orig = read_json(sub(base_cfg, "manifest.json"))
         write_json(sub(cfg, "manifest.json"), manifest_orig)
         write_json(sub(cfg, "rl", "smoke.json"), smoke_copy)
@@ -76,8 +92,8 @@ def run_lambda_sweep(base_cfg, lambdas=(0.0, 0.5, 1.0, 1.5, 2.0), output_subdir=
         # Train RL on the newly weighted bank
         rl_report = pipeline.train_rl(cfg, spec, tracker=tracker)
 
-        # Evaluate on test split
-        eval_report = evaluate.evaluate(cfg, spec, lm, tracker=tracker)
+        # Evaluate RL controller on test split
+        eval_report = evaluate.evaluate(cfg, spec, lm, tracker=tracker, methods=["rl_controller"])
 
         m_rl = eval_report["methods"]["rl_controller"]
         res_row = {

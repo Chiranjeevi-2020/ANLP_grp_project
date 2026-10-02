@@ -119,3 +119,16 @@ def test_tracker_offline_safety():
     # Tracker should log without crashing even when disabled
     tracker.log({"dummy_metric": 1.0}, step=1)
     tracker.finish()
+
+
+def test_linguistic_audit_metrics():
+    from proto_1.linguistic_audit import distinct_ngrams, repetition_ratio, tokenize_words
+    words = tokenize_words("Hello, world! This is a test.")
+    assert words == ["hello", "world", "this", "is", "a", "test"]
+    d1 = distinct_ngrams(["hello world", "hello friend"], n=1)
+    assert 0.0 < d1 <= 1.0
+    rep_positive = repetition_ratio(["the the test", "normal sentence"])
+    assert rep_positive == 0.5
+    rep_zero = repetition_ratio(["one two three", "four five six"])
+    assert rep_zero == 0.0
+
