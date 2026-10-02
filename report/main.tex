@@ -75,6 +75,21 @@ J(\theta)=\mathbb{E}_{z,h,a,m}\big[\1[\hat z_B{=}z]-\lambda\,\1[\hat z_C{=}z]\bi
 \end{equation}
 so $R\in\{-1,0,1\}$ for $\lambda=1$. Only $\theta$ is trained, never the base LM.
 
+\paragraph{Theoretical grounding in Rational Speech Acts (RSA).}
+We formally ground our objective in the Rational Speech Acts (RSA) framework \citep{frank2012predicting,goodman2016pragmatic}. In standard RSA, a pragmatic speaker $S_1$ chooses an utterance $u$ to maximise communicative utility for a listener, balancing informativeness against production cost: $U(u; z) = \log L(z \mid u) - c(u)$. When generalized to multi-party settings featuring an unratified overhearer or eavesdropper $C$ alongside the intended, ratified recipient $B$ \citep{clark1987concealing,cohngordon2018pragmatically,hawkins2020continual}, the overhearer-aware pragmatic speaker optimizes:
+\begin{equation}
+U_{\text{RSA}}(u; z, h) = \log L_B(z \mid u, h) - \lambda \log L_C(z \mid u) - c(u).
+\label{eq:rsa_obj}
+\end{equation}
+Here $L_B$ models the \emph{informed} insider whose posterior updates over $(h, u)$, whereas $L_C$ models the unratified outsider who observes only the public utterance $u$ (lacking the common ground history $h$). The cost term $c(u) \propto -\log p_{\text{LM}}(u \mid h)$ penalizes unnatural or unfluent utterances, enforcing \emph{linguistic naturalness}.
+
+Direct Bayesian computation of $U_{\text{RSA}}$ requires marginalizing over the intractable space of all possible multi-turn continuations. In our framework, we instantiate this objective through reinforcement learning over a frozen foundation LM $p_{\text{LM}}$:
+\begin{enumerate}
+\item \textbf{0--1 communication reward as surrogate:} In decision-theoretic communication games with discrete topic recovery under $0$--$1$ loss, maximizing accuracy corresponds to minimizing Bayes risk. The empirical reward $R = \1[\hat z_B = z] - \lambda \1[\hat z_C = z]$ directly operationalises the tension between $B$'s informativeness and $C$'s obfuscation in Eq.~\eqref{eq:rsa_obj}.
+\item \textbf{Informed $B$ vs.\ outsider $C$:} Agent $B$ is explicitly modeled as an informed listener by granting its decoder access to $(h, m)$, so that $h$ serves as shared private common ground \citep{clark1987concealing}. In contrast, outsider $C$ is restricted to public text $m$.
+\item \textbf{Linguistic naturalness via frozen generation:} By restricting the controller to discrete natural-language cover instructions $\iota(a)$ and using a frozen foundation model $p_{\text{LM}}$ for surface generation, $c(m)$ is implicitly minimized, preserving fluency and preventing cryptographic language drift.
+\end{enumerate}
+
 \paragraph{Information boundaries.} These are enforced in code and checked by automated audits:
 \begin{itemize}
 \item $A$ and the controller know $z$. $A$ receives a private description of $z$ in its own prompt.
@@ -134,8 +149,8 @@ Figure~\ref{fig:flow} summarises the information flow. The primary measurement i
 
 %=====================================================================
 \section{Literature Review}\label{sec:lit}
-\paragraph{Concealment and audience design in human dialogue.}
-\citet{clark1987concealing} studied speakers who must refer to objects so that a partner understands but an overhearer does not. They found that speakers exploit private common ground, and that overhearers do considerably worse than addressees. This is the human analogue of our $B$/$C$ asymmetry, and it motivates our use of pre-switch history as the insiders' shared key. Collaborative reference \citep{clark1986referring}, Goffman's participation framework \citep{goffman1981forms}, and conversational code-switching as an in-group signal \citep{gumperz1982discourse} supply the conceptual vocabulary. In particular, they predict that meaning concealed from an outsider must rest on context the outsider lacks. Our pair-ambiguous history design operationalises exactly this.
+\paragraph{Concealment, RSA, and audience design in human dialogue.}
+\citet{clark1987concealing} studied speakers who must refer to objects so that a partner understands but an overhearer does not. They found that speakers exploit private common ground, and that overhearers do considerably worse than addressees. This is the human analogue of our $B$/$C$ asymmetry, and it motivates our use of pre-switch history as the insiders' shared key. Collaborative reference \citep{clark1986referring}, Goffman's participation framework \citep{goffman1981forms}, and conversational code-switching as an in-group signal \citep{gumperz1982discourse} supply the conceptual vocabulary. In computational pragmatics, the \emph{Rational Speech Acts} (RSA) framework \citep{frank2012predicting,goodman2016pragmatic} models communication as recursive probabilistic inference between speakers and listeners. Crucially, extensions of RSA to reference games with overhearers and unshared context \citep{cohngordon2018pragmatically,hawkins2020continual} show that speakers naturally calibrate informativeness against overhearer leakage. Our pair-ambiguous history design operationalises this exact dynamic.
 
 \paragraph{Zero-shot coordination.}
 In cooperative multi-agent RL, agents trained together often converge on arbitrary conventions that fail with new partners. \emph{Other-Play} \citep{hu2020otherplay} and K-level reasoning \citep{cui2021klevel} address this in Hanabi \citep{bard2020hanabi}, a game whose core difficulty is conveying hidden information through constrained, publicly observed actions. Human-AI coordination work \citep{carroll2019utility,strouse2021fcp} shows that self-play conventions can be brittle with real partners. Our results reproduce a small version of this phenomenon. The controller learns a convention that its own reward decoder understands but a prompted insider does not (\S\ref{sec:results}). This makes ZSC-style robustness a central concern for the second half of the project.
@@ -149,14 +164,14 @@ Early work showed that agents can learn communication protocols from task reward
 \paragraph{Linguistic steganography and LLM collusion.}
 Text steganography hides bits in generated text, either through LSTM or LM sampling choices \citep{fang2017generating,ziegler2019neural,dai2019towards}, or with provable security under realistic distributions \citep{kaptchuk2021meteor}. \citet{wu2024generative} use LLMs for generative steganography. Watermarking \citep{kirchenbauer2023watermark} is the cooperative counterpart. These methods require token-level control and a shared secret key, whereas we operate through discourse-level topic choice. More recently, LLM agents have been shown to develop or be prompted into covert collusion \citep{motwani2024secret,mathew2024hidden}, and to encode hidden reasoning \citep{roger2023preventing}. These works frame covert channels as a safety risk. Our benign, small-scale setting offers a controlled testbed for measuring such channels, including how easily a \emph{trained} outsider detects them.
 
-\paragraph{Steering frozen language models.}
-A frozen LM can be steered in several ways: with control codes \citep{keskar2019ctrl}, attribute-model gradients \citep{dathathri2020pplm}, discriminator-guided decoding \citep{krause2021gedi}, continuous prefixes or soft prompts \citep{li2021prefix,lester2021power}, activation additions \citep{turner2023activation}, or RL-optimised discrete prompts \citep{deng2022rlprompt}. Our discrete controller sits closest to RLPrompt. It selects among natural-language instructions with a policy gradient, but it conditions on the latent $z$ and on dialogue state. Soft prompts are the planned continuous alternative.
+\paragraph{Steering frozen language models and representation engineering.}
+A frozen LM can be steered in several ways: with control codes \citep{keskar2019ctrl}, attribute-model gradients \citep{dathathri2020pplm}, discriminator-guided decoding \citep{krause2021gedi}, continuous prefixes or soft prompts \citep{li2021prefix,lester2021power}, activation additions \citep{turner2023activation}, or RL-optimised discrete prompts \citep{deng2022rlprompt}. Concurrently, \emph{Representation Engineering} (RepE) \citep{zou2023representation}, \emph{Inference-Time Intervention} (ITI) \citep{li2023inference}, and latent steering vectors \citep{subramani2022extracting} show that internal activation spaces of frozen models can be directly controlled along conceptual directions without parameter updates. Our discrete controller sits at the intersection: it conditions on latent representations $\phi(h)$ and $z$ to select natural-language steering instructions with policy gradients.
 
 \paragraph{RL with language-model environments.}
 REINFORCE \citep{williams1992simple} and its sequence-level variants \citep{ranzato2016sequence} remain competitive for LM optimisation \citep{ahmadian2024back}, alongside PPO-based RLHF \citep{schulman2017ppo,ouyang2022training}. Because our action space is small and categorical, plain REINFORCE with a moving-average baseline is sufficient and easy to audit. Optimising against a learned reward model invites \emph{reward hacking} \citep{skalse2022defining}. We observe a mild form of it: gains for the reward decoder do not transfer to a prompted insider.
 
-\paragraph{Multi-agent dialogue and topic shift.}
-Negotiation agents learned deceptive strategies from reward alone \citep{lewis2017deal}. Today's LLM societies \citep{park2023generative,li2023camel} and debate systems \citep{du2024debate} coordinate purely through prompting. Topic-shift research \citep{xie2021tiage,sevegnani2021otters} studies \emph{when} and \emph{how} to switch topic naturally, but not whether latent meaning survives the switch.
+\paragraph{Multi-party dialogue, floor management, and topic shift.}
+In multi-party discourse, managing participation status, conversational floor, and addressed versus unaddressed participants is foundational \citep{traum2004issues}. Recent transformer models such as MPC-BERT \citep{gu2022mpc} specifically encode multi-party conversation structure and speaker-addressee dynamics. In LLM societies \citep{park2023generative,li2023camel} and debate protocols \citep{du2024debate}, agents coordinate primarily via unconstrained prompts without cryptographic guarantees. Topic-shift benchmarks \citep{xie2021tiage,sevegnani2021otters} investigate transition naturalness, but do not consider latent preservation under adversarial eavesdroppers.
 
 \paragraph{Probing.}
 For RQ4 we will use linear probes \citep{alain2016understanding} with control tasks \citep{hewitt2019designing}, and heed known caveats of probe interpretation \citep{belinkov2022probing}. The same tools serve as our frozen-feature $B$ decoder.
@@ -170,10 +185,11 @@ For RQ4 we will use linear probes \citep{alain2016understanding} with control ta
 Line of work & NL channel & Frozen LM & Insider ctx & Outsider eval & Learned \\
 \midrule
 Adv.\ crypto \citep{abadi2016learning} & -- & -- & key & trained Eve & \checkmark\\
+RSA with overhearers \citep{goodman2016pragmatic,hawkins2020continual} & \checkmark & -- & common ground & listener model & --\\
 Emergent comm.\ \citep{lazaridou2017multiagent} & partial & -- & -- & -- & \checkmark\\
 Ling.\ stego \citep{ziegler2019neural,kaptchuk2021meteor} & \checkmark & \checkmark & key & steganalysis & --\\
 LLM collusion \citep{motwani2024secret,mathew2024hidden} & \checkmark & mostly & varies & monitor & partial\\
-Steering \citep{lester2021power,deng2022rlprompt} & \checkmark & \checkmark & -- & -- & \checkmark\\
+Steering / RepE \citep{lester2021power,zou2023representation} & \checkmark & \checkmark & -- & -- & \checkmark\\
 ZSC \citep{hu2020otherplay} & -- & -- & \checkmark & -- & \checkmark\\
 \textbf{Ours} & \checkmark & \checkmark & history & prompted + trained & \checkmark\\
 \bottomrule
